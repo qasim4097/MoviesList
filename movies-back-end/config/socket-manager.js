@@ -1,5 +1,6 @@
 const io = require('../server').io
 
+/** socket callbacks for real-time update for user */
 module.exports  = function(socket){
     socket.on('DELETED' , (id, )=>{
         io.emit('movie_deleted', id)

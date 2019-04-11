@@ -22,6 +22,11 @@ const MovieRating = props => (
 
 export default class MoviesList extends Component {
     _isMounted = false;
+
+    /** initializing the state of the table
+     * for the population of data
+     * and persistant sorting
+     */
     constructor(props){
         super(props);
         this.onDelete = this.onDelete.bind(this);
@@ -75,6 +80,8 @@ export default class MoviesList extends Component {
                 },]
         }
     }
+
+    /** action formatters for performing actions on rows */
     actionsFormatter = (cell, row) => <Movie id={row._id} onClick={() => this.onDelete(row._id)} />;
     ratingsFormatter = (cell, row) => <MovieRating param_id= {this.props.match.params.id} id={row._id} onClick={() => this.Rate(row._id)} movie={row}  canRate={() => this.canRate(row._id)}/>;
 
@@ -83,6 +90,8 @@ export default class MoviesList extends Component {
         this.initSocket();
         this.loadData();
         const socket = io(SocketUrl)
+
+        /** listeners for real time data updates */
         socket.on('movie_deleted', (data) => {
             let arr = this.state.movies.filter( function(movie){
                 return movie._id !== data
@@ -149,6 +158,7 @@ export default class MoviesList extends Component {
             })
     }
 
+    /** sort the rows based on the order and field selected by user */
     sortField(movies){
         var textA = ''
         var textB = ''
@@ -209,6 +219,8 @@ export default class MoviesList extends Component {
             })
     }
 
+    /** checks if user can rate the movie and
+     * making sure that user can only rate once */
     canRate(id){
         const params = new URLSearchParams(this.props.location.search);
         if( params.get('rated') === localStorage.jwtToken){
@@ -231,6 +243,7 @@ export default class MoviesList extends Component {
             return <Movie movie={currentMovie} key={index}/>;
         })
     }
+
     render(){
         return (
             <div className='container'>

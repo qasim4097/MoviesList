@@ -3,8 +3,10 @@ let Movie = require('../models/movie.model');
 let Rating = require('../models/rating.model');
 let User = require('../models/user.model')
 
+/** Routes */
 module.exports = function (app, passport) {
 
+    /** Registering a user **/
     app.post('/signup', (req, res, next) => {
     passport.authenticate('local-signup', function (err, user, info) {
         if (err) { return res.status(501).json(err); }
@@ -52,6 +54,8 @@ module.exports = function (app, passport) {
             }
         });
     });
+
+    /** Add movie based on the data passed */
     
     app.post('/add', (req, res, next) => {
         let movie = new Movie
@@ -123,6 +127,10 @@ module.exports = function (app, passport) {
         });
     });
 
+    /** Rate a movie based on the 
+     * rating provided by the user
+     * (total_rating / total_ratings)
+    */
     app.post('/rate/:id', (req, res) => {
         User.findById(req.body._creator, function (err, user) {
             Movie.findById(req.body.movie, function(err, movie){

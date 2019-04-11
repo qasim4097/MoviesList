@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+
+/** Login component
+ */
 class Login extends Component {
   constructor() {
     super();
@@ -19,7 +22,6 @@ onSubmit = e => {
         name: this.state.name,
         password: this.state.password
         };
-    console.log(userData);
     axios
     .post("http://localhost:4000/login", userData)
     .then(res => {

@@ -14,9 +14,6 @@ import Navbar from './components/navbar.component';
 
 class App extends Component {
   
-  shouldComponentUpdate(){
-    console.log('YO')
-  }
   render() {
     return (
       <Router>
