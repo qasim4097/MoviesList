@@ -5,7 +5,7 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
+      name: "",
       password: "",
       errors: {}
     };
@@ -16,7 +16,7 @@ onChange = e => {
 onSubmit = e => {
     e.preventDefault();
     const userData = {
-        email: this.state.email,
+        name: this.state.name,
         password: this.state.password
         };
     console.log(userData);
@@ -55,12 +55,12 @@ return (
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
-                  value={this.state.email}
-                  error={errors.email}
-                  id="email"
-                  type="email"
+                  value={this.state.name}
+                  error={errors.name}
+                  id="name"
+                  type="text"
                 />
-                <label htmlFor="email">Email</label>
+                <label htmlFor="name">Name</label>
               </div>
               <div className="input-field col s12">
                 <input
