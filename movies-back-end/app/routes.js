@@ -35,6 +35,7 @@ module.exports = function (app, passport) {
                     console.log(err);
                 }
                 else {
+                    console.log(movies)
                     res.json({
                         movies: movies,
                         movie_ratings: ratings});
@@ -59,9 +60,12 @@ module.exports = function (app, passport) {
     
     app.post('/add', (req, res, next) => {
         let movie = new Movie
+        console.log(movie)
         movie.movie_duration = req.body.movie_duration
         movie.movie_description = req.body.movie_description
         movie.movie_name = req.body.movie_name
+        movie.movie_release_date = req.body.movie_release_date
+        movie.movie_actors = req.body.movie_actors
         movie.save()
             .then(movie => {
                 res.status(200).json({ 'movie': ' movie added successfully ' });

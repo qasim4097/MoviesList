@@ -68,7 +68,9 @@ export default class AddMovie extends Component {
         const newMovie = {
             movie_description: this.state.movie_description,
             movie_duration: this.state.movie_duration,
-            movie_name: this.state.movie_name
+            movie_name: this.state.movie_name,
+            movie_actors: this.state.movie_actors,
+            movie_release_date: this.state.movie_release_date
         }
 
         axios.post('http://localhost:4000/add', newMovie)

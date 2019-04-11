@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
+
 import Sortable from 'react-bootstrap-table-next';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import io from 'socket.io-client';
 let SocketUrl = 'http://localhost:5000';
+
 
 const Movie = props => (
     <div>
@@ -37,6 +40,15 @@ export default class MoviesList extends Component {
             columns: [{
                 dataField: 'movie_name',
                 text: 'Name',
+                sort: true,
+                onSort: (field, order) => {
+                    localStorage.setItem('field', field);
+                    localStorage.setItem('order', order);
+                }
+            },
+            {
+                dataField: 'movie_release_date',
+                text: 'Release Date',
                 sort: true,
                 onSort: (field, order) => {
                     localStorage.setItem('field', field);
@@ -148,8 +160,13 @@ export default class MoviesList extends Component {
         axios.get('http://localhost:4000/')
             .then(res => {
                 let sorted_movies = res.data.movies
+                console.log(sorted_movies)
                 if(localStorage.field && localStorage.order){
                     sorted_movies = this.sortField(res.data.movies)
+                }
+                for( var i = 0; i< sorted_movies.length; i++)
+                {
+                    sorted_movies[i].movie_release_date = moment(sorted_movies[i].movie_release_date).format('MMM Do YYYY')
                 }
                 this.setState({ movies: sorted_movies, movie_ratings: res.data.movie_ratings })
             })
@@ -171,10 +188,18 @@ export default class MoviesList extends Component {
                 textA = a[localStorage.field]
                 textB = b[localStorage.field]
             }
+            else if( localStorage.field === 'movie_release_date'){
+                textA = new Date(a.movie_release_date);
+                textB = new Date(b.movie_release_date);
+                console.log(textA)
+                console.log(textB)
+                console.log(localStorage.order )
+            }
             else{
                 textA = a[localStorage.field].toUpperCase();
                 textB = b[localStorage.field].toUpperCase();
             }
+
             if (localStorage.order === 'asc'){
                 return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
             }
